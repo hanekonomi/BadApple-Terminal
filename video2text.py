@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal, ROUND_HALF_UP
 import numpy as np
 import cv2
@@ -19,7 +20,7 @@ class video2text:
         if width >= 1:
             self.ratio = (width / self.video_width)
             self.width = round(self.video_width * self.ratio)
-            self.height = round(self.video_height * self.ratio)
+            self.height = round(self.video_height * self.ratio / 2)
         else:
             self.width = self.video_width
             self.height = self.video_height
@@ -27,14 +28,13 @@ class video2text:
 
     def output(self):
         with open(output_path, mode="w") as f:
-            # 設定を書き込み
-            f.write(str({"width": self.width, "height": self.height, "total_frame": self.total_frame, "frame_rate": self.frame_rate}) + "\n")
             for frame in range(self.total_frame):
                 # 文字列の配列に変換
                 img = self.image_proc(frame).astype(dtype="unicode")
                 for i in range(len(img)):
                     f.writelines(img[i])
                     f.write("\n")
+                f.write("end\n")
                 # 進捗表示
                 print(f"\r{Decimal((frame + 1) / self.total_frame * 100).quantize(Decimal("0.01"), ROUND_HALF_UP):2f}% {(str(frame + 1) + "/" + str(self.total_frame)).rjust(10)}", end="")
 
@@ -64,6 +64,6 @@ class video2text:
 if __name__ == "__main__":
     video_path = "./badapple.mp4"
     output_path = "./data.txt"
-    width = 128
+    width = 96
     v2t = video2text(video_path, output_path, width)
     v2t.output()
