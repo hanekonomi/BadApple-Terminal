@@ -1,4 +1,4 @@
-import json
+from sys import argv
 from decimal import Decimal, ROUND_HALF_UP
 import numpy as np
 import cv2
@@ -64,6 +64,13 @@ class video2text:
 if __name__ == "__main__":
     video_path = "./badapple.mp4"
     output_path = "./data.txt"
-    width = 96
+
+    width = 128
+    try:
+        width = int(argv[1])
+    except:
+        pass
+        
+    print(f"width: {width}")
     v2t = video2text(video_path, output_path, width)
     v2t.output()
