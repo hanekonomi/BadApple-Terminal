@@ -18,7 +18,10 @@ class videoplayer:
             self.frame = 0
             self.audio_obj = simpleaudio.WaveObject.from_wave_file(self.audio_path).play()
             while True:
-                self.draw_terminal(next(f), self.frame)
+                try:
+                    self.draw_terminal(next(f), self.frame)
+                except StopIteration:
+                    break
 
 
     def draw_terminal(self, string, frame):

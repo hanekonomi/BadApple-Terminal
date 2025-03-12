@@ -15,8 +15,10 @@ class videoplayer:
             os.system("cls")
             self.frame = 0
             while True:
-                self.draw_terminal(next(f), self.frame)
-
+                try:
+                    self.draw_terminal(next(f), self.frame)
+                except StopIteration:
+                    break
 
     def draw_terminal(self, string, frame):
         if "end\n" != string:
